@@ -1,0 +1,1 @@
+export const urlImage="http://10.17.8.139/android/trankhanhhang_laravel/public/image/"

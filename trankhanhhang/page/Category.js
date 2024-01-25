@@ -61,6 +61,54 @@ const categories = [
     },
 
 ];
+// function Category() {
+//   const [cat, setCat] = useState([]);
+
+//   useEffect(() => {
+//     getAllCat();
+//   }, []);
+
+//   const getAllCat = () => {
+//     axios
+//       .get('https://fakestoreapi.com/products/category/jewelery')
+//       .then(function (response) {
+//         // handle success
+//         setCat(response.data);
+//       })
+//       .catch(function (error) {
+//         // handle error
+//         alert(error.message);
+//       })
+//       .finally(function () {
+//         // always executed
+//         console.log('Finally called');
+//       });
+//   };
+//   const renderCat = (cat) => (
+//     <View style={styles.catItem} key={cat.id}>
+//       <Image source={{ uri: cat.image }} style={styles.catImage} />
+//       <Text style={styles.catName}>{cat.title}</Text>
+//       {/* <Text style={styles.productPrice}>{product.price}</Text> */}
+//     </View>
+//   );
+//   return (
+//     <View style={styles.container}>
+//       {/* <TouchableOpacity
+//         style={styles.buttonStyle}
+//         onPress={getAllProduct}>
+//         <Text>Simple Get Call</Text>
+//       </TouchableOpacity> */}
+
+//       <Text style={styles.title}>Jewelery Shop
+//       </Text>
+//       {/* <Image source={require('../../assets/logocafe.png')} style={styles.logo} /> */}
+//       <Text style={styles.title}>Product</Text>
+//       <ScrollView horizontal>
+//         {cat.map((cat) => renderCat(cat))}
+//       </ScrollView>
+//     </View>
+//   );
+// }
 
 const Category = () => {
     const renderCatItem = ({ item }) => (

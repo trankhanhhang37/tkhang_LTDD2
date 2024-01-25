@@ -5,14 +5,17 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
 import AsyncStorage from '@react-native-async-storage/async-storage';
+
 import { useSelector, useDispatch } from "react-redux";
+import {urlImage} from "../config";
+
 import * as ActionCreaters from "../states/ActionCreaters";
 import { bindActionCreators } from 'redux';
 import { Ionicons } from '@expo/vector-icons';
 const DetailProduct = ({ navigation, route }) => {
 
   const { product } = route.params;
-  const [quantity, setQuantity] = useState(0);
+  const [quantity, setQuantity] = useState(1);
 
   const dispatch = useDispatch();
   const { addCartItem } = bindActionCreators(ActionCreaters, dispatch);//call dispatch
@@ -34,17 +37,17 @@ const DetailProduct = ({ navigation, route }) => {
     } else {
       alert("Quantity must be greater than zero!")
     }
+  
   };
   return (
     <View style={styles.container}>
       <TouchableOpacity onPress={() => { navigation.goBack() }}>
         <Ionicons name="arrow-back-circle-outline" size={30} color="#707981" />
       </TouchableOpacity>
-      
-      <Image source={{ uri: product.images[0] }} style={styles.productImage} />
-      <Text style={styles.productName}>{product.title}</Text>
-      <Text style={styles.productPrice}>{product.price}</Text>
-      <Text style={styles.productDescription}>Chi tiết: {product.description}</Text>
+      <Image source={{uri:urlImage+"product/"+product.product_image}} style={styles.productImage} />
+      <Text style={styles.productName}>{product.product_name}</Text>
+      <Text style={styles.productPrice}>{product.listed_price}</Text>
+      <Text style={styles.productDescription}>Chi tiết: {product.product_detail}</Text>
       <View style={styles.viewQuantity}>
 
         <TouchableOpacity>
@@ -54,14 +57,24 @@ const DetailProduct = ({ navigation, route }) => {
         <Text style={styles.productQuantity}>{quantity}</Text>
 
         <TouchableOpacity>
-          <Ionicons name="add-circle-outline" size={26} color="#a3a375" onPress={() => { increase(product.stock); }} />
+          <Ionicons name="add-circle-outline" size={26} color="#a3a375" onPress={() => { increase(product.store_qty); }} />
         </TouchableOpacity>
       </View>
+      <View style={styles.cart}>
       <TouchableOpacity style={styles.cartButton} onPress={() => addToCart(product, quantity)}>
         {/* <Icon name="shopping-cart" size={24} color="maroon" /> */}
         <MaterialCommunityIcons name="cart-plus" color="#3d3d29" size={24} />
         <Text> Thêm vào Giỏ hàng</Text>
       </TouchableOpacity>
+      <TouchableOpacity style={{marginLeft:2, backgroundColor:'#cceeff', padding:5,alignItems: 'center',
+    marginTop: 5,
+
+       }}onPress={() => navigation.navigate("Payments")}>
+        {/* <Icon name="shopping-cart" size={24} color="maroon" /> */}
+        <MaterialCommunityIcons name="note-check-outline" color="#3d3d29" size={24} />
+        <Text> Đặt Hàng</Text>
+      </TouchableOpacity>
+      </View>
     </View>
   );
 };
@@ -94,6 +107,25 @@ const styles = StyleSheet.create({
     marginLeft: 25,
 
   },
+  productQuantity: {
+    fontSize: 20,
+    color: "#3d3d29",
+    marginBottom: 6,
+    marginLeft: 6,
+    marginRight: 6,
+  },
+
+  viewQuantity: {
+    borderColor: "#e6e6e6",
+    borderRadius: 2,
+    height: 20,
+    width: 20,
+    flexDirection: "row",
+    marginRight:50,
+    marginBottom:20
+
+  },
+
   cartButton: {
     // width:"70%",
     backgroundColor: '#cceeff',
@@ -104,26 +136,11 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     flexDirection: 'column',
   },
-  viewQuantity: {
-    borderColor: "#e6e6e6",
-    borderRadius: 2,
-    height: 20,
-    width: 20,
+
+  cart:{
     flexDirection: "row",
-    marginRight:50,
-    marginBottom:20
-  },
-  productQuantity: {
-    fontSize: 20,
-    color: "#3d3d29",
-    marginBottom: 6,
-    marginLeft: 6,
-    marginRight: 6,
 
-
-  },
-
-
+  }
 });
 
 const clearAsyncStorage = async () => {

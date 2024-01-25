@@ -1,7 +1,16 @@
+// này là mấy dispatch hành động tương tác với giỏ hàng
+// có mấy hành động?
+// thêm x sp
+// xóa 1 sp
+// tawng +1 sl
+//tru -1 sl
+//xoa toan bo gio hang
 
 export const addCartItem = (product, _quantity) => {
     return (dispatch) => {
       dispatch({ type:"addCartItem", payload: product , quantity: _quantity});
+      //nó nè okils tui cũng nghĩ v kk
+      //tại vì cái cụm product kia sao bỏ sl dô đó được, nó kỳ oki
     };
   };
   
@@ -29,4 +38,5 @@ export const addCartItem = (product, _quantity) => {
     };
   };
 
+//mấy này chờ bà làm cái giao diện giở hàng r ms làm tiếp, chưa có nút tăng sl với nút xóa oki
 

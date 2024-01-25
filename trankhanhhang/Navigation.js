@@ -8,6 +8,8 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 import Cart from './page/Cart';
 import DetailProduct from './page/DetailProduct';
 import Register from './page/Register';
+import Payments from './page/Payments';
+import Profile from './page/Profile';
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
@@ -41,7 +43,7 @@ const NavHome=({navigation}) =>{
       />
       <Tab.Screen
         name="Profile"
-        component={Cart}
+        component={Profile}
         options={{
           tabBarLabel: 'Profile',
           tabBarIcon: ({ color, size }) => (
@@ -49,6 +51,7 @@ const NavHome=({navigation}) =>{
           ),
         }}
       />
+
     </Tab.Navigator>
   );
 }
@@ -68,9 +71,8 @@ function Navigation () {
           // options={{title: 'Welcome'}}
         />
           <Stack.Screen name="product-detail" component={DetailProduct} />
-
+          <Stack.Screen name="Payments" component={Payments} />
       </Stack.Navigator>
-
     </NavigationContainer>
   );
 };

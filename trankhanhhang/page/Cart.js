@@ -7,10 +7,12 @@ import { StatusBar } from "expo-status-bar";
 import { bindActionCreators } from "redux";
 import * as ActionCreaters from "../states/ActionCreaters";
 
+import {urlImage} from "../config";
 
 
 
 export default function Cart({ navigation }) {
+  //lệnh này để call dưx liệu từ cái kho hồi nãy nè ok, state.product là:
   const cart_product = useSelector((state) => state.product);
   const dispatch = useDispatch();
   const { removeCartItem, decreaseCartItemQuantity, increaseCartItemQuantity } = bindActionCreators(ActionCreaters, dispatch);//call dispatch
@@ -64,6 +66,7 @@ export default function Cart({ navigation }) {
       {cart_product.length === 0 ? (<><Text>Cart is empty
         </Text></>) : (
         <ScrollView>
+          {/* mấy cái biến product.XXX là của giỏ hàng, để ý chớ nhầm ak */}
           <View>
             {cart_product.map((product, index) => (
               <TouchableOpacity key={index} style={styles.productItem}
@@ -73,7 +76,7 @@ export default function Cart({ navigation }) {
                     <Ionicons name="close-outline" size={26} color="#a3a375" onPress={()=>deleteItem(product._id)}/>
 
                   </TouchableOpacity>
-                  <Image source={{ uri: product.image }} style={styles.productImage} />
+                  <Image source={{uri:urlImage+"product/"+product.image}} style={styles.productImage} />
                   <View style={styles.info}>
                     <Text style={styles.productName}>{product.title} </Text>
                     <Text style={styles.productPrice}>{product.price}</Text>
@@ -98,10 +101,13 @@ export default function Cart({ navigation }) {
             )
             )}
           </View>
+
           <View style={styles.footer}>
+
             <Text>TỔNG TIỀN: {totalPrice} </Text>
-            <TouchableOpacity style={styles.payBtn}>
-              THANH TOÁN
+            <TouchableOpacity style={styles.payBtn}
+            onPress={() => navigation.navigate("Payments")}>
+              ĐẶT HÀNG
 
             </TouchableOpacity>
 
@@ -119,19 +125,18 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#ffffff',
-    marginTop: 20,
+    // marginTop: 20,
     flexDirection: "row",
     borderBottomWidth: 1,
     paddingBottom: 10,
     borderColor: "#e6e6e6",
     // marginLeft:20,
+    marginTop:10
 
   },
   footer: {
     flexDirection: "column",
     marginLeft: 20,
-
-
   },
   productQuantity: {
     fontSize: 20,
@@ -139,8 +144,6 @@ const styles = StyleSheet.create({
     marginBottom: 6,
     marginLeft: 6,
     marginRight: 6,
-
-
   },
   productImage: {
     // width: widthToDp(30),
@@ -178,4 +181,5 @@ const styles = StyleSheet.create({
     marginBottom: 20,
 
   },
+
 });

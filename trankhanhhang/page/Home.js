@@ -5,87 +5,27 @@ import axios from 'axios';
 import Category from './Category';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import Search from './Search';
-
-
-// import NavHome from './Tabnav';
-// import {NavigationContainer} from '@react-navigation/native';
-
-// const products = [
-//     {
-//         id: '1',
-//         name: 'Product 1',
-//         price: '$10',
-//         image: require('../assets/product/sn1.jpg'),
-//     },
-//     {
-//         id: '2',
-//         name: 'Product 2',
-//         price: '$20',
-//         image: require('../assets/product/sn1.jpg'),
-//     },
-//     {
-//         id: '2',
-//         name: 'Product 2',
-//         price: '$20',
-//         image: require('../assets/product/sn1.jpg'),
-//     },
-//     {
-//         id: '2',
-//         name: 'Product 2',
-//         price: '$20',
-//         image: require('../assets/product/sn3.jpg'),
-//     },
-//     {
-//         id: '2',
-//         name: 'Product 2',
-//         price: '$20',
-//         image: require('../assets/product/sn2.jpg'),
-//     },
-//     {
-//         id: '2',
-//         name: 'Product 2',
-//         price: '$20',
-//         image: require('../assets/product/sn1.jpg'),
-//     },
-//     {
-//         id: '1',
-//         name: 'Product 2',
-//         price: '$20',
-//         image: require('../assets/product/sn2.jpg'),
-//     },
-//     {
-//         id: '2',
-//         name: 'Product 2',
-//         price: '$20',
-//         image: require('../assets/product/sn1.jpg'),
-//     },
-
-// ];
-
+import productservice from "../services/ProductService";
+import {urlImage} from "../config";
 function Home({navigation}) {
   const [products, setProducts] = useState([]);
 
-  const getAllProduct = () => {
-    axios
-      .get('https://dummyjson.com/products')
-      .then(function (response) {
-        // handle success
-        if(products!=[]){
-          setProducts(response.data.products);
-        }
-       
-      })}
+  useEffect(function () {
+      (async function () {
+          await productservice.getNewProductAll(8, 1).then(function (result) {
+            setProducts(result.data.new_products_all);
 
-useEffect(() => {
-  getAllProduct();
-}, []);
+          });
+      })();
+
+  },[]);
 
 
 const Item = ({product}) => (
   <TouchableOpacity style={styles.productItem} onPress={()=>{navigation.navigate('product-detail',{product})}}>
-     <Image source={{ uri: product.images[0]}} style={styles.productImage} /> 
-    <Text style={styles.productName}>{product.title}</Text>
-    <Text style={styles.productPrice}>{product.price}</Text>
+     <Image source={{uri:urlImage+"product/"+product.product_image}} style={styles.productImage} /> 
+    <Text style={styles.productName}>{product.product_name}</Text>
+    <Text style={styles.productPrice}>{product.listed_price}</Text>
   </TouchableOpacity>
 );
 return (
@@ -114,7 +54,7 @@ return (
     <FlatList
         data={products}
         renderItem={({item}) => <Item product={item} />}
-        keyExtractor={item => item.id}
+        keyExtractor={item => item.product_id}
         contentContainerStyle={styles.productList}
         numColumns={2}
       />
@@ -129,6 +69,40 @@ return (
   </View>
 );
 
+// const Home = () => {
+//     const renderProductItem = ({ item }) => (
+//         <TouchableOpacity style={styles.productItem}>
+//             <Image source={item.image} style={styles.productImage} />
+//             <Text style={styles.productName}>{item.name}</Text>
+//             <Text style={styles.productPrice}>{item.price}</Text>
+//         </TouchableOpacity>
+//     );
+//     const { search } = this.state;
+
+//     return (
+//         <View style={styles.home}>
+//             <View>
+//                 <Text style={styles.title}>Hello</Text>
+//             </View>
+//             {/* <SearchBar
+//                 placeholder="Type Here..."
+//                 // onChangeText={this.updateSearch}
+//                 value={search}
+//             /> */}
+//             <FlatList
+//                 data={products}
+//                 renderItem={renderProductItem}
+// keyExtractor={(item) => item.id}
+//                 contentContainerStyle={styles.productList}
+//                 numColumns={2}
+//             />
+{/* <ScrollView >
+        {products.map((product) => renderProduct(product))} 
+      </ScrollView> */}
+
+  //         </View>
+  //     );
+  // };
 }
 const styles = StyleSheet.create({
   productList: {

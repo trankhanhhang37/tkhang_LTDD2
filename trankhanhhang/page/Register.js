@@ -9,21 +9,77 @@ import {  StyleSheet,Text,
   ImageBackground,
 
 } from "react-native";
+import userservice from "../services/UserService";
+
 export default function Register( { navigation }) {
   const [email, setEmail] = useState("");
+
+  const [name, setName] = useState("");
+
   const [password, setPassword] = useState("");
+  const [phone, setPhone] = useState("");
+  const [address, setAddress] = useState("");
+  const [confirm_password, setConfirmPassword] = useState("");
+
+  const registerAdd = async () => {
+		var user = new FormData();
+		user.append("name", name);
+		user.append("email", email);
+		user.append("phone", phone);
+		user.append("password", password);
+		user.append("address", address);
+		user.append("role", "customer");
+
+		const rg = await userservice.register(user);
+
+		if (rg.data.success === true) {
+			alert(rg.data.message);
+      navigation.navigate("Login");
+		}
+		else {
+			alert(rg.data.message);
+		}
+
+	}
   return (
     <View style={styles.container}>
     {/* <ImageBackground source={require('../assets/br.jpg')}  style={styles.image}>     */}
      <StatusBar style="auto" />
      <Image style={styles.imageAva} source={require("../assets/Khang.png")} />
-
+     <View style={styles.inputView}>
+        <TextInput
+          style={styles.TextInput}
+          placeholder="Name."
+          placeholderTextColor="#003f5c"
+          value={name}
+           onChangeText={(email) => setName(email)}
+        /> 
+      </View> 
       <View style={styles.inputView}>
         <TextInput
           style={styles.TextInput}
           placeholder="Email."
           placeholderTextColor="#003f5c"
-          // onChangeText={(email) => setEmail(email)}
+          value={email}
+           onChangeText={(email) => setEmail(email)}
+        /> 
+      </View> 
+      <View style={styles.inputView}>
+        <TextInput
+          style={styles.TextInput}
+          placeholder="Phone."
+          placeholderTextColor="#003f5c"
+          value={phone}
+           onChangeText={(e) => setPhone(e)}
+        /> 
+      </View>
+      <View style={styles.inputView}>
+        <TextInput
+          style={styles.TextInput}
+          placeholder="Address."
+          placeholderTextColor="#003f5c"
+          value={address}
+           onChangeText={(e) => setAddress(e)}
         /> 
       </View> 
       <View style={styles.inputView}>
@@ -32,20 +88,29 @@ export default function Register( { navigation }) {
           placeholder="Password."
           placeholderTextColor="#003f5c"
           secureTextEntry={true}
-          // onChangeText={(password) => setPassword(password)}
+          value={password}
+          onChangeText={(password) => setPassword(password)}
         /> 
       </View> 
-      {/* <TouchableOpacity>
-        <Text style={styles.forgot_button}>Forgot Password?</Text> 
-      </TouchableOpacity>  */}
-      {/* <TouchableOpacity title="LOGIN" style={styles.loginBtn}
-              onPress={() => navigation.navigate("Tab")}
+      <View style={styles.inputView}>
+        <TextInput
+          style={styles.TextInput}
+          placeholder="Confirm Password."
+          placeholderTextColor="#003f5c"
+          secureTextEntry={true}
+          value={confirm_password}
+          onChangeText={(e) => setConfirmPassword(e)}
+        /> 
+      </View> 
+ 
+       <TouchableOpacity title="LOGIN" style={styles.loginBtn}
+              onPress={() => navigation.navigate("Login")}
               >
                 <Text style ={styles.signupText}>LOG IN</Text>
 
-      </TouchableOpacity>  */}
+      </TouchableOpacity>  
       <TouchableOpacity style={styles.signupBtn}
-      onPress={() => navigation.navigate("Tab")}>
+      onPress={() => registerAdd()}>
         <Text style ={styles.signupText}>SIGN UP</Text>
       </TouchableOpacity>
       {/* </ImageBackground> */}
